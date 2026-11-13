@@ -1,15 +1,20 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/novotnyradekcz/gator/internal/config"
+	"github.com/novotnyradekcz/gator/internal/database"
+
+	_ "github.com/lib/pq"
 )
 
 type state struct {
 	cfg *config.Config
+	db  *database.Queries
 }
 
 func main() {
@@ -18,12 +23,23 @@ func main() {
 		log.Fatalf("error reading config: %v", err)
 	}
 
-	s := &state{cfg: &cfg}
+	dbURL := cfg.DBURL
+	dbConn, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("error opening database: %v", err)
+	}
+
+	s := &state{
+		cfg: &cfg,
+		db:  database.New(dbConn),
+	}
 
 	cmds := &commands{
 		handlers: make(map[string]func(*state, command) error),
 	}
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
 
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "error: not enough arguments provided; a command name is required")
