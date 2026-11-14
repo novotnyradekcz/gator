@@ -9,17 +9,12 @@ import (
 	"github.com/novotnyradekcz/gator/internal/database"
 )
 
-func handlerFollow(s *state, cmd command) error {
+func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 1 {
 		return fmt.Errorf("exactly a URL is required\nusage: gator follow <url>")
 	}
 
 	ctx := context.Background()
-	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("get current user: %w", err)
-	}
-
 	feed, err := s.db.GetFeedByURL(ctx, cmd.args[0])
 	if err != nil {
 		return fmt.Errorf("get feed by URL: %w", err)
@@ -41,17 +36,12 @@ func handlerFollow(s *state, cmd command) error {
 	return nil
 }
 
-func handlerFollowing(s *state, cmd command) error {
+func handlerFollowing(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 0 {
 		return fmt.Errorf("following does not accept arguments\nusage: gator following")
 	}
 
 	ctx := context.Background()
-	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("get current user: %w", err)
-	}
-
 	follows, err := s.db.GetFeedFollowsForUser(ctx, user.ID)
 	if err != nil {
 		return fmt.Errorf("get feed follows: %w", err)
