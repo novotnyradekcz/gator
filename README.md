@@ -1,6 +1,6 @@
 # Gator
 
-Gator is a command-line RSS feed aggregator written in Go.
+Gator is a command-line RSS feed aggregator written in Go. Created as part of the [Buid a Blog Aggregator in Go](https://www.boot.dev/courses/build-blog-aggregator-golang) course on [boot.dev](https://www.boot.dev).
 
 ## Requirements
 
@@ -70,13 +70,13 @@ In another terminal, browse the collected posts or inspect feeds and follows:
 gator browse        # Show the 2 most recent posts by default
 gator browse 10     # Show up to 10 posts
 gator feeds         # List registered feeds
-gator following    # List feeds followed by the current user
+gator following     # List feeds followed by the current user
 ```
 
 Other useful commands:
 
 ```sh
-gator users                                      # List users
+gator users                                     # List users
 gator login alice                               # Switch the current user
 gator follow "https://example.com/feed.xml"     # Follow an existing feed by URL
 gator unfollow "https://example.com/feed.xml"   # Stop following a feed
