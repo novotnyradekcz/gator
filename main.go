@@ -47,6 +47,7 @@ func main() {
 	cmds.register("follow", middlewareLoggedIn(handlerFollow))
 	cmds.register("unfollow", middlewareLoggedIn(handlerUnfollow))
 	cmds.register("following", middlewareLoggedIn(handlerFollowing))
+	cmds.register("browse", middlewareLoggedIn(handlerBrowse))
 
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "error: not enough arguments provided; a command name is required")
